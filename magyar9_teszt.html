@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Magyar nyelv és irodalom 9. – Teszt</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=Source+Serif+4:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f0e8;
+    --paper: #fffdf7;
+    --ink: #1a1208;
+    --sepia: #8b6914;
+    --rust: #9b3a1a;
+    --gold: #c9921a;
+    --light-gold: #f0d98a;
+    --border: #c4a96b;
+    --muted: #7a6840;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    background-image: radial-gradient(ellipse at 20% 50%, rgba(201,146,26,0.06) 0%, transparent 60%), radial-gradient(ellipse at 80% 20%, rgba(155,58,26,0.04) 0%, transparent 60%);
+    font-family: 'Source Serif 4', Georgia, serif;
+    color: var(--ink);
+    min-height: 100vh;
+  }
+  .header { background: var(--ink); color: var(--light-gold); text-align: center; padding: 2.5rem 1rem 2rem; position: relative; overflow: hidden; }
+  .header::before { content: ''; position: absolute; inset: 0; background: repeating-linear-gradient(-45deg, transparent, transparent 20px, rgba(201,146,26,0.04) 20px, rgba(201,146,26,0.04) 21px); }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(1.8rem, 5vw, 3rem); font-weight: 900; letter-spacing: 0.02em; position: relative; text-shadow: 2px 2px 8px rgba(0,0,0,0.5); }
+  .header p { font-size: 1rem; opacity: 0.75; margin-top: 0.4rem; position: relative; font-weight: 300; letter-spacing: 0.08em; text-transform: uppercase; }
+  .ornament { color: var(--gold); font-size: 1.4rem; position: relative; letter-spacing: 0.3em; display: block; margin-bottom: 0.5rem; }
+  .container { max-width: 820px; margin: 0 auto; padding: 2rem 1.2rem 4rem; }
+  .screen { display: none; }
+  .screen.active { display: block; animation: fadeIn 0.4s ease; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: none; } }
+  .name-card { background: var(--paper); border: 1px solid var(--border); border-radius: 3px; padding: 3rem 2.5rem; box-shadow: 0 4px 24px rgba(26,18,8,0.12); margin-top: 2rem; text-align: center; position: relative; }
+  .name-card::before { content: ''; position: absolute; top: 8px; left: 8px; right: 8px; bottom: 8px; border: 1px solid rgba(201,146,26,0.2); border-radius: 2px; pointer-events: none; }
+  .name-card h2 { font-family: 'Playfair Display', serif; font-size: 1.8rem; color: var(--rust); margin-bottom: 0.5rem; }
+  .name-card p { color: var(--muted); margin-bottom: 2rem; font-size: 0.95rem; line-height: 1.6; }
+  .name-card label { display: block; text-align: left; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.12em; color: var(--sepia); margin-bottom: 0.5rem; font-weight: 600; }
+  .name-card input { width: 100%; padding: 0.85rem 1.1rem; border: 1.5px solid var(--border); border-radius: 2px; background: var(--bg); font-family: 'Source Serif 4', serif; font-size: 1.1rem; color: var(--ink); outline: none; transition: border-color 0.2s; margin-bottom: 1.5rem; }
+  .name-card input:focus { border-color: var(--gold); }
+  .btn { display: inline-block; background: var(--rust); color: #fff; border: none; padding: 0.9rem 2.4rem; font-family: 'Source Serif 4', serif; font-size: 1rem; letter-spacing: 0.06em; cursor: pointer; border-radius: 2px; transition: background 0.2s, transform 0.1s; text-transform: uppercase; }
+  .btn:hover { background: #7a2c13; }
+  .btn:active { transform: scale(0.98); }
+  .progress-bar-wrap { background: rgba(26,18,8,0.1); border-radius: 2px; height: 5px; margin-bottom: 1.5rem; overflow: hidden; }
+  .progress-bar { height: 100%; background: linear-gradient(90deg, var(--rust), var(--gold)); transition: width 0.4s ease; border-radius: 2px; }
+  .progress-label { font-size: 0.78rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 0.5rem; display: flex; justify-content: space-between; }
+  .q-card { background: var(--paper); border: 1px solid var(--border); border-radius: 3px; padding: 2rem 2rem 1.5rem; box-shadow: 0 3px 16px rgba(26,18,8,0.1); margin-bottom: 1.2rem; position: relative; }
+  .q-number { position: absolute; top: -1px; left: -1px; background: var(--rust); color: #fff; font-family: 'Playfair Display', serif; font-size: 0.85rem; padding: 0.2rem 0.8rem; border-radius: 3px 0 3px 0; letter-spacing: 0.05em; }
+  .q-topic { font-size: 0.72rem; color: var(--gold); text-transform: uppercase; letter-spacing: 0.14em; margin-bottom: 0.7rem; padding-top: 1.2rem; font-weight: 600; }
+  .q-text { font-size: 1.08rem; line-height: 1.65; color: var(--ink); margin-bottom: 1.4rem; font-weight: 400; }
+  .options { list-style: none; }
+  .options li { margin-bottom: 0.55rem; }
+  .option-label { display: flex; align-items: flex-start; gap: 0.8rem; padding: 0.7rem 1rem; border: 1.5px solid rgba(196,169,107,0.4); border-radius: 2px; cursor: pointer; transition: border-color 0.15s, background 0.15s; line-height: 1.5; font-size: 0.97rem; }
+  .option-label:hover { border-color: var(--gold); background: rgba(240,217,138,0.15); }
+  .option-label input[type=radio] { display: none; }
+  .opt-letter { flex-shrink: 0; width: 1.5rem; height: 1.5rem; border: 1.5px solid var(--border); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Playfair Display', serif; font-size: 0.78rem; font-weight: 700; color: var(--sepia); transition: all 0.15s; margin-top: 0.05rem; }
+  .option-label.selected { border-color: var(--rust); background: rgba(155,58,26,0.07); }
+  .option-label.selected .opt-letter { background: var(--rust); border-color: var(--rust); color: #fff; }
+  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 1rem; flex-wrap: wrap; gap: 0.5rem; }
+  .nav-btn { background: transparent; border: 1.5px solid var(--border); color: var(--sepia); padding: 0.6rem 1.4rem; font-family: 'Source Serif 4', serif; font-size: 0.9rem; cursor: pointer; border-radius: 2px; transition: all 0.15s; letter-spacing: 0.05em; }
+  .nav-btn:hover { border-color: var(--sepia); background: rgba(139,105,20,0.08); }
+  .nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+  .submit-btn { background: var(--rust); border-color: var(--rust); color: #fff; padding: 0.7rem 1.8rem; }
+  .submit-btn:hover { background: #7a2c13; border-color: #7a2c13; }
+  .question-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(44px, 1fr)); gap: 0.5rem; margin: 1rem 0 1.5rem; }
+  .q-dot { width: 44px; height: 44px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-family: 'Playfair Display', serif; font-weight: 700; cursor: pointer; transition: transform 0.15s; border: 2px solid transparent; }
+  .q-dot:hover { transform: scale(1.1); }
+  .q-dot.answered { background: var(--sepia); color: #fff; }
+  .q-dot.unanswered { background: var(--bg); border-color: var(--border); color: var(--muted); }
+  .q-dot.current { border-color: var(--rust); }
+  .sending-screen { text-align: center; padding: 4rem 1rem; }
+  .spinner { width: 48px; height: 48px; border: 4px solid rgba(201,146,26,0.2); border-top-color: var(--rust); border-radius: 50%; animation: spin 0.9s linear infinite; margin: 0 auto 1.5rem; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .success-card { background: var(--paper); border: 1px solid var(--border); border-radius: 3px; padding: 3rem 2rem; text-align: center; box-shadow: 0 4px 24px rgba(26,18,8,0.12); margin-top: 2rem; }
+  .success-icon { font-size: 3.5rem; margin-bottom: 1rem; }
+  .success-card h2 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--rust); margin-bottom: 0.8rem; }
+  .success-card p { color: var(--muted); line-height: 1.7; font-size: 0.97rem; }
+  .info-box { background: rgba(240,217,138,0.2); border: 1px solid rgba(201,146,26,0.3); border-radius: 2px; padding: 1rem 1.3rem; margin: 1.5rem 0; font-size: 0.88rem; color: var(--sepia); line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="header">
+  <span class="ornament">&#10022; &#10022; &#10022;</span>
+  <h1>Magyar nyelv és irodalom 9.</h1>
+  <p>Felévi tudáspróba · NAT 2020</p>
+</div>
+<div class="container">
+  <div class="screen active" id="screen-name">
+    <div class="name-card">
+      <h2>Üdvözöllek!</h2>
+      <p>Ez a teszt a 9. évfolyamos magyar nyelv és irodalom tananyagát fogja át.<br>Kérlek, add meg a neved a kitöltés megkezdése előtt.</p>
+      <label for="student-name">Teljes neved</label>
+      <input type="text" id="student-name" placeholder="pl. Kovács Anna" autocomplete="name" />
+      <br>
+      <button class="btn" onclick="startQuiz()">Teszt megkezdése &rarr;</button>
+    </div>
+  </div>
+  <div class="screen" id="screen-quiz">
+    <div class="progress-label">
+      <span id="prog-text">1 / 30. kérdés</span>
+      <span id="prog-answered">0 megválaszolva</span>
+    </div>
+    <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar" style="width:3.3%"></div></div>
+    <div id="question-area"></div>
+    <div class="nav-row">
+      <button class="nav-btn" id="btn-prev" onclick="goTo(currentQ-1)">&larr; Előző</button>
+      <div class="question-grid" id="q-dots"></div>
+      <button class="nav-btn" id="btn-next" onclick="goTo(currentQ+1)">Következő &rarr;</button>
+    </div>
+    <div style="text-align:center; margin-top:1.5rem;">
+      <button class="nav-btn submit-btn" onclick="confirmSubmit()">Beküldés &rarr;</button>
+    </div>
+  </div>
+  <div class="screen" id="screen-sending">
+    <div class="sending-screen">
+      <div class="spinner"></div>
+      <h2 style="font-family:'Playfair Display',serif; color:var(--rust);">Eredmény rögzítése...</h2>
+      <p style="color:var(--muted); margin-top:0.5rem;">Kérlek, ne zárd be az ablakot!</p>
+    </div>
+  </div>
+  <div class="screen" id="screen-success">
+    <div class="success-card">
+      <div class="success-icon">&#128218;</div>
+      <h2>Teszt befejezve!</h2>
+      <p>Köszönjük, <strong id="done-name"></strong>! A válaszaid sikeresen rögzítve lettek.</p>
+      <div class="info-box">Az eredményedet a tanárod fogja látni és értékelni.<br>Eredményed bekerült a nyilvántartásba.</div>
+      <p style="font-size:0.85rem; color:var(--muted);">Az ablakot most bezárhatod.</p>
+    </div>
+  </div>
+</div>
+<script>
+const QUESTIONS = [
+  { topic: "Irodalom - Epika", q: "Melyik mufajba tartozik Arany Janos Toldi cimu alkotasa?", opts: ["Lirai kolteszet", "Epikus kolteszet - elbeszelő koltemeny", "Dramai mufaj", "Episztola", "Oda", "Epigramma"], a: 1 },
+  { topic: "Irodalom - Petőfi Sándor", q: "Melyik Petofi Sandor legismertebb hazafias verse, amelyet 1848 marcius 15-en szavaltak el?", opts: ["Egy gondolat bantja elmemet", "Nemzeti dal", "Az apostol", "Janos vitez", "Szeptember vegen", "Fa leszek, ha..."], a: 1 },
+  { topic: "Irodalom - Arany János", q: "Melyik Arany Janos balladaja szol egy hazug asszony lelkiismereti gyotrelmerool?", opts: ["Szondi ket aprodja", "V. Laszlo", "Agnes asszony", "Bor vitez", "Tengeri-hantás", "Voros Rebek"], a: 2 },
+  { topic: "Irodalom - Vorosmarty", q: "Melyik Vorosmarty Mihaly leghiresebb koltemenye, amely a magyar nep sorsat es jovőjet tarja fel?", opts: ["Csongor es Tünde", "Ven cigany", "Szozat", "Zalán futása", "Cseresnyés", "Eger"], a: 2 },
+  { topic: "Irodalom - Kölcsey", q: "Ki irta a Himnuszt, Magyarorszag nemzeti imáját?", opts: ["Vorosmarty Mihaly", "Petofi Sandor", "Kolcsey Ferenc", "Arany Janos", "Babits Mihaly", "Ady Endre"], a: 2 },
+  { topic: "Irodalom - Ady Endre", q: "Melyik Ady Endre verseskotete jelzi a modern magyar lira kezdetet (1906)?", opts: ["Az Illés szekerén", "Vér és arany", "Új versek", "A magunk szerelme", "Ki látott engem?", "A halottak élén"], a: 2 },
+  { topic: "Irodalom - Babits Mihaly", q: "Melyik Babits Mihaly leghiresebb verse, amelyben az orok koltoi hivatast fogalmazza meg?", opts: ["Jónás könyve", "Esti kérdés", "In Horatium", "Csak posta voltál", "Cigány a siralomházban", "Psychoanalysis Christiana"], a: 1 },
+  { topic: "Irodalom - Kosztolányi", q: "Melyik Kosztolanyi Dezso legismertebb regenye, amelynek fohose egy szegeny pesti kishivatalnok?", opts: ["Édes Anna", "Pacsirta", "Aranysárkány", "Nero, a véres költő", "A rossz orvos", "Kornél Esti"], a: 0 },
+  { topic: "Irodalom - Móricz Zsigmond", q: "Melyik Moricz Zsigmond novellaja mutatja be a szegeny parasztsag kiszolgáltatott helyzetét drámai erővel?", opts: ["Barbárok", "Hét krajcár", "Tragédia", "Sárarany", "Az Isten háta mögött", "Rokonok"], a: 1 },
+  { topic: "Irodalom - Jozsef Attila", q: "Melyik Jozsef Attila verse kezdodik ezzel a sorral: 'Tiszta szívvel nem vagyok...'?", opts: ["Mama", "Tiszta szívvel", "Óda", "A Dunánál", "Születésnapomra", "Kései sirató"], a: 1 },
+  { topic: "Irodalom - Radnóti Miklos", q: "Melyik Radnoti Miklos utolso versciklusa, amelyet menetközben irt hadifogsagban?", opts: ["Pogány köszöntő", "Újhold", "Eclogák", "Razglednicák (Bori notesz)", "Tajtékos ég", "Járkálj csak, halálraítélt!"], a: 3 },
+  { topic: "Irodalom - Szepirodalmi mufajok", q: "Hogyan nevezzük azt a rovidprózai mufajt, amely egyetlen konfliktust, fordulatot vagy helyzetet ábrázol tomorítve?", opts: ["Regény", "Novella", "Eposzon", "Ballada", "Mese", "Anekdota"], a: 1 },
+  { topic: "Irodalom - Eposzi kellékek", q: "Melyik az eposz egyik kotelez kelleke, az isteni beavatkozas neve?", opts: ["In medias res", "Deus ex machina", "Enumeratio", "Epitheton ornans", "Propositio", "Invocatio"], a: 1 },
+  { topic: "Irodalom - Shakespeare", q: "Melyik Shakespeare tragedia foszereplőjenek mondja el a leghiresebb 'Lenni vagy nem lenni' monologatot?", opts: ["Macbeth", "Othello", "Hamlet", "Lear király", "Romeo", "Brutus"], a: 2 },
+  { topic: "Irodalom - Antikvitas", q: "Melyik ókori görög eposz szól a trójai háborúból hazatérő Odüsszeusz kalandjairól?", opts: ["Iliász", "Odüsszeia", "Aeneis", "Theogonia", "Munkák és napok", "Argonautika"], a: 1 },
+  { topic: "Nyelvtan - Kommunikáció", q: "Mit nevezünk kommunikaciós csatornanak?", opts: ["A közlés tartalmát", "A küldő személyét", "Az üzenet továbbításának fizikai közegét", "A befogadó reakcióját", "A közlés célját", "A nyelvi kódot"], a: 2 },
+  { topic: "Nyelvtan - Szövegtan", q: "Melyik szovegalkotasi elv biztositja, hogy a szoveg mondatai logikailag osszekapcsolódjanak?", opts: ["Koherencia", "Kohézió", "Linearitás", "Tematikus progresszió", "Intertextualitás", "Deixis"], a: 0 },
+  { topic: "Nyelvtan - Szófajok", q: "Melyik szofajba tartozik a 'gyorsan' szo?", opts: ["Melléknév", "Főnév", "Határozószó", "Ige", "Számnév", "Névmás"], a: 2 },
+  { topic: "Nyelvtan - Mondattan", q: "Melyik mondatrész jelöli meg az állítmány cselekvésének célját vagy eredményét?", opts: ["Alany", "Tárgy", "Határozó", "Jelző", "Értelmező", "Állítmány"], a: 1 },
+  { topic: "Nyelvtan - Hangtan", q: "Mit nevezünk hasonulasnak a magyar hangtanban?", opts: ["Két magánhangzó összeolvadását", "Egy hang kiesését", "Egy hang alkalmazkodását a szomszédos hanghoz", "Hangok felcserélődését", "Egy hang megnyúlását", "Új hang keletkezését"], a: 2 },
+  { topic: "Nyelvtan - Szóalkotás", q: "Melyik szóalkotasi mód eredménye a 'napraforgó' szó?", opts: ["Képzés", "Jelezés", "Összetétel", "Rövidítés", "Mozaikszó-alkotás", "Szóhasadás"], a: 2 },
+  { topic: "Nyelvtan - Helyesírás", q: "Melyik helyesírási alapelv érvényesül a 'barátság' szó írásában?", opts: ["Kiejtés elve", "Szóelemzés elve", "Hagyomány elve", "Egyszerűsítés elve", "Különírás elve", "Fonetikus elv"], a: 1 },
+  { topic: "Irodalom - Retorika", q: "Melyik retorikai alakzat ismétli meg a mondat vagy verssor elejét?", opts: ["Epifora", "Anafora", "Chiasmus", "Alliteráció", "Paradoxon", "Oxymoron"], a: 1 },
+  { topic: "Irodalom - Lírai mufajok", q: "Melyik lirai mufaj dicsőíti és magasztalja tárgyát emelkedett hangnemben?", opts: ["Elégia", "Epigramma", "Óda", "Idill", "Dal", "Himnusz"], a: 2 },
+  { topic: "Irodalom - Stílus", q: "Melyik stilisztikai eszköz azonosít két különböző fogalmat ('Az élet egy utazás')?", opts: ["Hasonlat", "Megszemélyesítés", "Metafora", "Metonímia", "Szinekdoché", "Allegória"], a: 2 },
+  { topic: "Irodalom - Versforma", q: "Melyik versformát jellemzi az időmértékes verselésben a rövid-hosszú szótag váltakozása (U —)?", opts: ["Trocheus", "Jambus", "Daktilus", "Anapesztus", "Spondeus", "Pirrichius"], a: 1 },
+  { topic: "Irodalom - Korszakok", q: "Melyik irodalmi korszakra jellemző a természet kultusza, az érzelmek szabadsága és a nemzeti múlt iránti érdeklődés?", opts: ["Felvilágosodás", "Klasszicizmus", "Romantika", "Realizmus", "Barokk", "Reneszánsz"], a: 2 },
+  { topic: "Nyelvtan - Magyar nyelv eredete", q: "Melyik nyelvcsaládba tartozik a magyar nyelv?", opts: ["Indoeurópai", "Sémi", "Finnugor", "Altáji", "Kaukázusi", "Dravida"], a: 2 },
+  { topic: "Irodalom - Csokonai", q: "Melyik Csokonai Vitéz Mihaly legismertebb szerelmes verse, amelyet Lilla ihlette?", opts: ["A Reményhez", "Tartózkodó kérelem", "Az estve", "Konstancinápoly", "Dorottya", "A tihanyi Ekhóhoz"], a: 1 },
+  { topic: "Irodalom - Katona Jozsef", q: "Melyik Katona Jozsef legjelentosebb szinmuve, amelyet a magyar drámairodalomban kiemelkedő helyen tart a hagyomány?", opts: ["Ziska", "Luca széke", "Bánk bán", "Aubigny Clementia", "István, a magyarok első királya", "Jeruzsálem pusztulása"], a: 2 }
+];
+
+const SHEET_URL = "https://script.google.com/macros/s/AKfycbw7JmBhENXxDFlEPAR4JWtGYx8zWHfdIJRVc2gPAnZg4Durpzu39ZNxOm-9UzaNw39pMA/exec";
+const TANTARGY = "Magyar 9.";
+
+let studentName = "";
+let answers = new Array(QUESTIONS.length).fill(null);
+let currentQ = 0;
+const LETTERS = ["A","B","C","D","E","F"];
+
+function startQuiz() {
+  const inp = document.getElementById("student-name").value.trim();
+  if (!inp) { alert("Kérlek, add meg a neved!"); return; }
+  studentName = inp;
+  showScreen("screen-quiz");
+  renderQuestion(0);
+  renderDots();
+}
+function showScreen(id) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+}
+function renderQuestion(idx) {
+  currentQ = idx;
+  const q = QUESTIONS[idx];
+  document.getElementById("question-area").innerHTML = '<div class="q-card"><span class="q-number">' + (idx+1) + ' / ' + QUESTIONS.length + '</span><div class="q-topic">' + q.topic + '</div><div class="q-text">' + q.q + '</div><ul class="options">' + q.opts.map((opt,i) => '<li><label class="option-label ' + (answers[idx]===i?'selected':'') + '" onclick="selectAnswer(' + idx + ',' + i + ',this)"><input type="radio" name="q' + idx + '" value="' + i + '"><span class="opt-letter">' + LETTERS[i] + '</span><span>' + opt + '</span></label></li>').join('') + '</ul></div>';
+  const pct = ((idx+1)/QUESTIONS.length*100).toFixed(1);
+  document.getElementById("progress-bar").style.width = pct + "%";
+  document.getElementById("prog-text").textContent = (idx+1) + " / " + QUESTIONS.length + ". kérdés";
+  document.getElementById("prog-answered").textContent = answers.filter(a=>a!==null).length + " megválaszolva";
+  document.getElementById("btn-prev").disabled = idx === 0;
+  document.getElementById("btn-next").disabled = idx === QUESTIONS.length-1;
+  renderDots();
+}
+function selectAnswer(qIdx, optIdx, labelEl) {
+  answers[qIdx] = optIdx;
+  document.querySelectorAll('label.option-label').forEach(l => l.classList.remove('selected'));
+  labelEl.classList.add('selected');
+  document.getElementById("prog-answered").textContent = answers.filter(a=>a!==null).length + " megválaszolva";
+  renderDots();
+  if (qIdx < QUESTIONS.length-1) setTimeout(() => goTo(qIdx+1), 400);
+}
+function goTo(idx) {
+  if (idx < 0 || idx >= QUESTIONS.length) return;
+  renderQuestion(idx);
+}
+function renderDots() {
+  document.getElementById("q-dots").innerHTML = QUESTIONS.map((_,i) => '<div class="q-dot ' + (answers[i]!==null?'answered':'unanswered') + ' ' + (i===currentQ?'current':'') + '" onclick="goTo(' + i + ')" title="' + (i+1) + '. kérdés">' + (i+1) + '</div>').join('');
+}
+function confirmSubmit() {
+  const unanswered = answers.filter(a=>a===null).length;
+  if (unanswered > 0) { if (!confirm("Még " + unanswered + " kérdést nem válaszoltál meg. Biztosan bekülded?")) return; }
+  else { if (!confirm("Biztosan beküldöd a tesztet?")) return; }
+  submitQuiz();
+}
+async function submitQuiz() {
+  showScreen("screen-sending");
+  let score = 0;
+  QUESTIONS.forEach((q,i) => { if (answers[i] === q.a) score++; });
+  const pct = Math.round(score / QUESTIONS.length * 100);
+  let jegy = "Elégséges";
+  if (pct >= 80) jegy = "Jeles";
+  else if (pct >= 60) jegy = "Jó";
+  else if (pct >= 40) jegy = "Közepes";
+  const now = new Date();
+  const payload = {
+    nev: studentName,
+    tantargy: TANTARGY,
+    idopont: now.toLocaleDateString('hu-HU') + " " + now.toLocaleTimeString('hu-HU'),
+    pontszam: score,
+    osszesen: QUESTIONS.length,
+    szazalek: pct + "%",
+    jegy: jegy
+  };
+  QUESTIONS.forEach((q,i) => {
+    payload["K"+(i+1)] = (answers[i]!==null ? LETTERS[answers[i]] + ": " + q.opts[answers[i]] : "-") + (answers[i]===q.a ? " [helyes]" : " [helytelen]");
+  });
+  try {
+    await fetch(SHEET_URL, { method: "POST", mode: "no-cors", headers: {"Content-Type":"application/json"}, body: JSON.stringify(payload) });
+  } catch(e) { console.error(e); }
+  document.getElementById("done-name").textContent = studentName;
+  showScreen("screen-success");
+}
+</script>
+</body>
+</html>
